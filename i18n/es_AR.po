@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: pos_cash_out_limit 18.0.1.0.0\n"
+"Language: es_AR\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: model:ir.model,name:pos_cash_out_limit.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Sesión de punto de venta"
+
+msgid "This POS session has no cash payment method."
+msgstr "Esta sesión de PdV no tiene un método de pago en efectivo."
+
+msgid "Invalid cash movement type."
+msgstr "El tipo de movimiento de efectivo no es válido."
+
+msgid "The cash movement amount must be greater than zero."
+msgstr "El importe del movimiento de efectivo debe ser mayor que cero."
+
+msgid "Cash can only be withdrawn from an open POS session."
+msgstr "Solo se puede retirar efectivo de una sesión de PdV abierta."
+
+msgid "Cash Out blocked in %(session)s: requested %(requested)s, but only %(available)s is available in the drawer."
+msgstr "Retiro bloqueado en %(session)s: se solicitaron %(requested)s, pero en la caja solo hay %(available)s disponibles."
