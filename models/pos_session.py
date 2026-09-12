@@ -20,7 +20,7 @@ class PosSession(models.Model):
         self.ensure_one()
         cash_method = self.payment_method_ids.filtered("is_cash_count")[:1]
         if not cash_method:
-            raise UserError(_("This POS session has no cash payment method."))
+            raise UserError(_("Esta sesión del punto de venta no tiene un método de pago en efectivo."))
 
         payment_domain = self._get_captured_payments_domain() + [
             ("payment_method_id", "=", cash_method.id),
@@ -42,14 +42,14 @@ class PosSession(models.Model):
 
     def try_cash_in_out(self, _type, amount, reason, extras):
         if _type not in ("in", "out"):
-            raise UserError(_("Invalid cash movement type."))
+            raise UserError(_("El tipo de movimiento de efectivo no es válido."))
         if (
             isinstance(amount, bool)
             or not isinstance(amount, (int, float))
             or not isfinite(amount)
             or amount <= 0
         ):
-            raise UserError(_("The cash movement amount must be greater than zero."))
+            raise UserError(_("El importe del movimiento de efectivo debe ser mayor que cero."))
 
         if _type == "out":
             sessions = self.filtered("cash_journal_id")
@@ -62,14 +62,15 @@ class PosSession(models.Model):
                     [session.id],
                 )
                 if session.state not in ("opened", "closing_control"):
-                    raise UserError(_("Cash can only be withdrawn from an open POS session."))
+                    raise UserError(_("Solo se puede retirar efectivo de una sesión abierta."))
 
                 available = session._cash_out_limit_available()
                 if session.currency_id.compare_amounts(amount, max(available, 0.0)) > 0:
                     raise UserError(
                         _(
-                            "Cash Out blocked in %(session)s: requested %(requested)s, "
-                            "but only %(available)s is available in the drawer.",
+                            "Retiro de efectivo bloqueado en %(session)s. "
+                            "Solicitado: %(requested)s. "
+                            "Disponible en caja: %(available)s.",
                             session=session.display_name,
                             requested=session.currency_id.format(amount),
                             available=session.currency_id.format(max(available, 0.0)),
